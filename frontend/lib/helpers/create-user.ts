@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/db/prisma';
 import { sendMail } from '@/services/mail/mail';
-import { hashPin } from '@/lib/helpers/helper';
-import { randomBytes } from 'crypto';
+import { generateVerifyToken, hashPin } from '@/lib/helpers/helper';
+
 
 export const createUser = async (email: string, pin: string, name?: string) => {
   const hashedPin = await hashPin(pin);
@@ -9,7 +9,7 @@ export const createUser = async (email: string, pin: string, name?: string) => {
     throw new Error('Error hashing pin');
   }
 
-  const verifyToken = randomBytes(32).toString('hex');
+  const verifyToken = await generateVerifyToken();
 
   try {
     const user = await prisma.user.create({
@@ -39,5 +39,6 @@ export const createUser = async (email: string, pin: string, name?: string) => {
 
   } catch (error) {
     console.error('Error creating user:', error);
+    throw error;
   }
 }

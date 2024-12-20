@@ -43,7 +43,7 @@ export const useAuth = () => {
   };
 
 
-  const login = async (email: string, pin: string) => {
+  const signin = async (email: string, pin: string) => {
     try {
       const res = await fetch('/api/auth/signin', {
         method: 'POST',
@@ -78,5 +78,5 @@ export const useAuth = () => {
     }
   };
 
-  return { login, logout, signup, verifyEmail };
+  return { signin, logout, signup, verifyEmail };
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 type User = {
   id: string;
@@ -15,7 +15,7 @@ export function useUser() {
   const [user, setUser] = useState<User>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     fetchUser();

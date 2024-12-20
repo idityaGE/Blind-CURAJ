@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
-export const LoginSchema = z.object({
+export const SignInSchema = z.object({
   email: z.string().email(),
   pin: z.string().min(4).max(4),
 });
 
-export type LoginInput = z.infer<typeof LoginSchema>;
+export type SignInInput = z.infer<typeof SignInSchema>;
 
 export const SignUpSchema = z.object({
   email: z.string().email('Invalid email address'),

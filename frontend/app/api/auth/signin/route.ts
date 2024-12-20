@@ -1,12 +1,12 @@
 import { prisma } from '@/lib/db/prisma';
 import { verifyPin } from '@/lib/helpers/helper';
 import { NextRequest, NextResponse } from 'next/server';
-import { LoginSchema } from '@/types/user';
+import { SignInSchema } from '@/types/user';
 import { generateToken } from '@/lib/helpers/helper';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, pin } = LoginSchema.parse(await req.json());
+    const { email, pin } = SignInSchema.parse(await req.json());
 
     const user = await prisma.user.findUnique({
       where: { email },

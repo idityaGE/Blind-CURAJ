@@ -1,10 +1,10 @@
 import { prisma } from '@/lib/db/prisma';
 import { verifyPin } from '@/lib/helpers/helper';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { LoginSchema } from '@/types/user';
 import { generateToken } from '@/lib/helpers/helper';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { email, pin } = LoginSchema.parse(await req.json());
 

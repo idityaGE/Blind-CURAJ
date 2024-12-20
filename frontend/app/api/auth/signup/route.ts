@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createUser } from '@/lib/helpers/create-user';
 import { SignUpSchema } from '@/types/user';
 import { prisma } from '@/lib/db/prisma';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { email, pin, name } = SignUpSchema.parse(await req.json());
 

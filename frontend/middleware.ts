@@ -7,10 +7,10 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
 
   // Define public paths that don't need authentication
-  const publicPaths = ['/signin', '/signup', '/verify'];
+  const publicPaths = ['/signin', '/signup', '/verify', '/'];
 
   const isPublicPath = publicPaths.some(path =>
-    request.nextUrl.pathname.startsWith(path)
+    request.nextUrl.pathname === path || request.nextUrl.pathname.startsWith(path)
   );
 
   // If no token and trying to access protected route
@@ -18,13 +18,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
-  // If has token and trying to access public route
-  if (token && isPublicPath) {
+  // If has token and trying to access auth routes (signin/signup/verify)
+  if (token && isPublicPath && request.nextUrl.pathname !== '/') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // For protected routes, verify the token
-  if (token && !isPublicPath) {
+  // For protected routes or home route with token, verify the token
+  if (token && (!isPublicPath || request.nextUrl.pathname === '/')) {
     try {
       const decoded = verifyToken(token.value);
       const requestHeaders = new Headers(request.headers);
@@ -49,13 +49,6 @@ export async function middleware(request: NextRequest) {
 // Configure which routes to run middleware on
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };

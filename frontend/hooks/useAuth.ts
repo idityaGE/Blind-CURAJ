@@ -20,28 +20,11 @@ export const useAuth = () => {
         throw new Error(error.error);
       }
 
-      const data = await res.json();
-      return data;
+      router.push(`/verify?email=${encodeURIComponent(email)}`);
     } catch (error: any) {
       throw new Error(error.message);
     }
   };
-
-  const verifyEmail = async (token: string) => {
-    try {
-      const res = await fetch(`/api/auth/verify?token=${token}`);
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error);
-      }
-
-      return await res.json();
-    } catch (error: any) {
-      throw new Error(error.message);
-    }
-  };
-
 
   const signin = async (email: string, pin: string) => {
     try {
@@ -71,12 +54,12 @@ export const useAuth = () => {
         method: 'POST',
       });
 
-      router.push('/login');
+      router.push('/');
       router.refresh();
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
 
-  return { signin, logout, signup, verifyEmail };
+  return { signin, logout, signup };
 };

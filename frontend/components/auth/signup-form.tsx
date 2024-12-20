@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/hooks/useAuth';
 import {
   InputOTP,
   InputOTPGroup,
@@ -38,6 +39,7 @@ type SignUpInput = z.infer<typeof SignUpSchema>;
 
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const { signup } = useAuth();
 
   const form = useForm<SignUpInput>({
     resolver: zodResolver(SignUpSchema),
@@ -51,9 +53,14 @@ export function SignUpForm() {
 
   async function onSubmit(values: SignUpInput) {
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    console.log(values);
+    try {
+      await signup(values.email, values.pin, values.name);
+    } catch (error: any) {
+      form.setError('email', {
+        type: 'manual',
+        message: error.message,
+      });
+    }
     setIsLoading(false);
   }
 

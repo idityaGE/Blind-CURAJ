@@ -3,7 +3,11 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-export function LandingHero() {
+interface LandingHeroProps {
+  user: any | null; // Replace 'any' with your actual user type
+}
+
+export function LandingHero({ user }: LandingHeroProps) {
   return (
     <div className="flex flex-col items-center justify-center text-center space-y-8 py-20">
       <div className="space-y-4">
@@ -13,20 +17,30 @@ export function LandingHero() {
           Chat Freely
         </h1>
         <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-          Meet new people through random chat connections. Start meaningful conversations with strangers from around the world.
+          Meet new people through random chat connections. Start meaningful conversations with strangers from around your university.
         </p>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 mx-auto">
-        <Link href="/signin">
-          <Button size="lg" className="w-full sm:w-auto">
-            Sign In
-          </Button>
-        </Link>
-        <Link href="/signup">
-          <Button size="lg" variant="outline" className="w-full sm:w-auto">
-            Create Account
-          </Button>
-        </Link>
+        {user ? (
+          <Link href="/connect">
+            <Button size="lg" className="w-full sm:w-auto">
+              Connect Now
+            </Button>
+          </Link>
+        ) : (
+          <>
+            <Link href="/signup">
+              <Button size="lg" className="w-full sm:w-auto">
+                Get Started
+              </Button>
+            </Link>
+            <Link href="/signin">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                Sign In
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
       <div className="relative w-full max-w-4xl mx-auto">
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
@@ -39,3 +53,4 @@ export function LandingHero() {
     </div>
   );
 }
+

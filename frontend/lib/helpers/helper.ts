@@ -4,9 +4,7 @@ import { sign, verify } from 'jsonwebtoken';
 
 // JWT Token
 export const generateToken = (payload: any) => {
-  const token = sign(payload, process.env.JWT_SECRET!, {
-    expiresIn: '1h',
-  });
+  const token = sign(payload, process.env.JWT_SECRET!);
   return token;
 }
 

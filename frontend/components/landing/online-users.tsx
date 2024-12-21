@@ -7,8 +7,6 @@ import { Users, MessageCircle, Clock, UserPlus } from 'lucide-react';
 
 const StatsDisplay = ({ token }: { token?: string }) => {
 
-  console.log(token);
-
   const { stats, isConnected, requestStats } = useSocket(token || undefined);
 
   useEffect(() => {

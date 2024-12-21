@@ -123,6 +123,7 @@ export const useSocket = (token?: string) => {
   }, [socket]);
 
   return {
+    socket,
     isConnected,
     isAuthenticated,
     isWaiting,

@@ -2,12 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface LandingHeroProps {
   user: any | null; // Replace 'any' with your actual user type
 }
 
 export function LandingHero({ user }: LandingHeroProps) {
+  const router = useRouter();
+
+  const handleConnect = () => {
+    router.push('/chat');
+  };
+
   return (
     <div className="flex flex-col items-center justify-center text-center space-y-8 py-20">
       <div className="space-y-4">
@@ -22,11 +29,13 @@ export function LandingHero({ user }: LandingHeroProps) {
       </div>
       <div className="flex flex-col sm:flex-row gap-4 mx-auto">
         {user ? (
-          <Link href="/connect">
-            <Button size="lg" className="w-full sm:w-auto">
-              Connect Now
-            </Button>
-          </Link>
+          <Button
+            size="lg"
+            className="w-full sm:w-auto"
+            onClick={handleConnect}
+          >
+            Connect Now
+          </Button>
         ) : (
           <>
             <Link href="/signup">
@@ -53,4 +62,3 @@ export function LandingHero({ user }: LandingHeroProps) {
     </div>
   );
 }
-

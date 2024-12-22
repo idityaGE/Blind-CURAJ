@@ -17,7 +17,7 @@ const StatsDisplay = ({ token }: { token?: string }) => {
 
   return (
     <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-8">
-      <Card>
+      <Card className='bg-fg-primary'>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Users</CardTitle>
           <Users className="h-4 w-4 text-muted-foreground" />
@@ -32,7 +32,7 @@ const StatsDisplay = ({ token }: { token?: string }) => {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className='bg-fg-primary'>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Active Chats</CardTitle>
           <MessageCircle className="h-4 w-4 text-muted-foreground" />
@@ -47,7 +47,7 @@ const StatsDisplay = ({ token }: { token?: string }) => {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className='bg-fg-primary'>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Waiting Users</CardTitle>
           <Clock className="h-4 w-4 text-muted-foreground" />
@@ -62,7 +62,7 @@ const StatsDisplay = ({ token }: { token?: string }) => {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className='bg-fg-primary'>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Authenticated Users</CardTitle>
           <UserPlus className="h-4 w-4 text-muted-foreground" />

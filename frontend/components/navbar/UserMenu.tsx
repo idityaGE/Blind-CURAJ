@@ -42,7 +42,7 @@ export function UserMenu({ user }: UserMenuProps) {
         duration: 3000,
       })
       // Optionally redirect after successful logout
-      router.push('/login')
+      router.push('/')
     } catch (error) {
       toast({
         variant: "destructive",

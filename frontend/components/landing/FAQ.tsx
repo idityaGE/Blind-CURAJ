@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import BoldCopy from "@/components/animata/text/bold-copy";
 
 type FAQItem = {
   question: string;
@@ -14,32 +15,35 @@ type FAQItem = {
 
 const content: FAQItem[] = [
   {
-    question: "Lorem ipsum dolor sit amet?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    link: "https://google.com",
+    question: "Who can use this chat platform?",
+    answer: "This platform is exclusively available to students with a valid university email ID. You can only register and login using your official university email address.",
   },
   {
-    question: "Ut enim ad minim veniam?",
-    answer:
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    question: "Why do I need to verify my email address?",
+    answer: "Email verification is required to ensure that only current students of our university can access the platform. By verifying your university email address, we maintain a safe and trusted environment where you know you're chatting exclusively with fellow students. This verification process helps prevent unauthorized access and maintains the platform's integrity.",
   },
   {
-    question: "Duis aute irure dolor in reprehenderit?",
-    answer:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    question: "Is my identity protected?",
+    answer: "Yes, the chat system is completely anonymous. While you log in with your university email, your identity is never revealed to other users. All communications are anonymous to ensure your privacy.",
   },
   {
-    question: "Excepteur sint occaecat cupidatat non proident?",
-    answer:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    question: "Are my chats stored anywhere?",
+    answer: "No, we do not store any chat history. Once your chat session ends, all messages are permanently deleted. This ensures complete privacy and confidentiality.",
   },
+  {
+    question: "Who can I chat with?",
+    answer: "You can chat with other students from your university who are also registered on the platform. The system ensures that only verified university students can participate.",
+  },
+  {
+    question: "Is there a code of conduct?",
+    answer: "Yes, users are expected to maintain appropriate behavior and respect university policies. Any form of harassment, spam, or inappropriate content is strictly prohibited and may result in account suspension.",
+  }
 ];
 
 const FAQ = () => {
   return (
-    <div className="pt-16 pb-8 md:pt-24 md:pb-16">
-      <h3 className="!mt-0">Frequently Asked Questions</h3>
+    <div className="pt-16 pb-8 md:pt-24 md:pb-24 max-w-3xl mx-auto">
+      <BoldCopy text="FAQ" className="mb-8 bg-transparent" />
       <h4 className="text-muted-foreground">
         Can&apos;t find the answer you&apos;re looking for? Reach out to our
         customer support team.

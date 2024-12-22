@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import GitHubButton from './gradient-btn';
+import { UserBeam } from './user-beam';
 
 interface LandingHeroProps {
   user: any | null; // Replace 'any' with your actual user type
@@ -16,7 +18,7 @@ export function LandingHero({ user }: LandingHeroProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-8 py-20">
+    <div className="flex flex-col items-center justify-center text-center space-y-8">
       <div className="space-y-4">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
           Connect Anonymously,
@@ -27,15 +29,9 @@ export function LandingHero({ user }: LandingHeroProps) {
           Meet new people through random chat connections. Start meaningful conversations with strangers from around your university.
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 mx-auto">
+      <div className="flex flex-col sm:flex-row gap-4 mx-auto pb-4">
         {user ? (
-          <Button
-            size="lg"
-            className="w-full sm:w-auto"
-            onClick={handleConnect}
-          >
-            Connect Now
-          </Button>
+          <GitHubButton onClick={handleConnect} />
         ) : (
           <>
             <Link href="/signup">
@@ -51,7 +47,8 @@ export function LandingHero({ user }: LandingHeroProps) {
           </>
         )}
       </div>
-      <div className="relative w-full max-w-4xl mx-auto">
+      <UserBeam />
+      <div className="relative w-full max-w-4xl mx-auto pt-12">
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
         <img
           src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80"

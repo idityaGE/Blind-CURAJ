@@ -1,6 +1,6 @@
 'use client';
 
-import { Message } from './chat-context';
+import { Message } from '@/types/chat';
 
 interface MessageListProps {
   messages: Message[];

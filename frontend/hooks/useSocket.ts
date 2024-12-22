@@ -2,13 +2,6 @@ import { useEffect, useCallback, useState } from 'react';
 import io from 'socket.io-client';
 import { Socket } from 'socket.io-client';
 
-interface ChatMessage {
-  content: string;
-  senderId: string;
-  sessionId: string;
-  timestamp: Date;
-}
-
 interface ChatStartedEvent {
   sessionId: string;
   partnerId: string;
@@ -31,12 +24,10 @@ export const useSocket = (token?: string) => {
   const [isWaiting, setIsWaiting] = useState(false);
 
   useEffect(() => {
-    // Initialize socket connection
     const socketIo = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000', {
       auth: token ? { token } : undefined
     });
 
-    // Set up event listeners
     socketIo.on('connect', () => {
       setIsConnected(true);
       setSocket(socketIo);

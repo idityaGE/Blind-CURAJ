@@ -2,25 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useSocket } from '@/hooks/useSocket';
-
-export interface Message {
-  id: string;
-  content: string;
-  senderId: string;
-  timestamp: Date;
-  sessionId?: string;
-}
-
-interface ChatContextType {
-  messages: Message[];
-  sendMessage: (content: string) => void;
-  currentPartner: string | null;
-  findNewPartner: () => void;
-  stopSearching: () => void;
-  isWaiting: boolean;
-  isConnected: boolean;
-  isAuthenticated: boolean;
-}
+import { Message, ChatContextType } from '@/types/chat';
 
 const ChatContext = createContext<ChatContextType | null>(null);
 

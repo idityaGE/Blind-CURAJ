@@ -35,7 +35,7 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
     sendMessage: socketSendMessage,
     findChat,
     skipChat,
-    socket // Make sure to expose socket from useSocket
+    socket
   } = useSocket(token);
 
   useEffect(() => {
@@ -44,7 +44,6 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
     }
   }, [partnerId]);
 
-  // Handle incoming messages
   useEffect(() => {
     if (!socket || !isConnected) return;
 
@@ -55,7 +54,7 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
       timestamp: string;
     }) => {
       setMessages(prev => [...prev, {
-        id: Math.random().toString(), // Generate an ID since server doesn't provide one
+        id: Math.random().toString(),
         content: messageData.content,
         senderId: messageData.senderId,
         timestamp: new Date(messageData.timestamp),

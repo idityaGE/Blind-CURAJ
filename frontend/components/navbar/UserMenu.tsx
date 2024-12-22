@@ -12,6 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from '@/hooks/useAuth'
 
+import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
+
+import { ChangeName } from './change-name'
+
+
 interface UserMenuProps {
   user: {
     id: string
@@ -24,12 +30,26 @@ interface UserMenuProps {
 
 export function UserMenu({ user }: UserMenuProps) {
   const { logout } = useAuth()
+  const { toast } = useToast()
+  const router = useRouter()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      logout()
+      await logout()
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account",
+        duration: 3000,
+      })
+      // Optionally redirect after successful logout
+      router.push('/login')
     } catch (error) {
-      console.error(error)
+      toast({
+        variant: "destructive",
+        title: "Error logging out",
+        description: "Please try again later",
+        duration: 3000,
+      })
     }
   }
 
@@ -39,7 +59,7 @@ export function UserMenu({ user }: UserMenuProps) {
         <Avatar className="cursor-pointer hover:opacity-80 transition-opacity">
           <AvatarImage src={`https://github.com/shadcn.png`} alt={user.name} />
           <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
-            {user.name.charAt(0)}
+            {user.name.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -50,8 +70,13 @@ export function UserMenu({ user }: UserMenuProps) {
           <User className="mr-2 h-5 w-5" />
           <span className="font-medium">Profile</span>
         </DropdownMenuItem>
-        <div className="px-2 py-3 space-y-2">
-          <p className="text-sm"><span className="font-medium">Name:</span> {user.name}</p>
+        <div className="px-2 py-6 space-y-4">
+          <div className='flex items-center justify-between'>
+            <p className="text-sm"><span className="font-medium">Name:</span> {user.name}</p>
+            <ChangeName onSuccess={() => {
+              router.refresh()
+            }} />
+          </div>
           <p className="text-sm"><span className="font-medium">Email:</span> {user.email}</p>
           <p className="text-sm">
             <span className="font-medium">Verified:</span>
@@ -59,7 +84,9 @@ export function UserMenu({ user }: UserMenuProps) {
               {user.isVerified ? 'Yes' : 'No'}
             </span>
           </p>
-          <p className="text-sm"><span className="font-medium">Joined:</span> {new Date(user.createdAt).toLocaleDateString()}</p>
+          <p className="text-sm">
+            <span className="font-medium">Joined:</span> {new Date(user.createdAt).toLocaleDateString()}
+          </p>
         </div>
         <DropdownMenuSeparator className="my-2" />
         <DropdownMenuItem
@@ -73,4 +100,3 @@ export function UserMenu({ user }: UserMenuProps) {
     </DropdownMenu>
   )
 }
-

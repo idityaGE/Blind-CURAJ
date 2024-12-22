@@ -1,15 +1,16 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { MessageSquare, SkipForward, Loader2 } from 'lucide-react';
+import { MessageSquare, SkipForward, Loader2, XCircle } from 'lucide-react';
 
 interface ChatHeaderProps {
   hasPartner: boolean;
   isWaiting: boolean;
   onSkip: () => void;
+  onStop: () => void;
 }
 
-export function ChatHeader({ hasPartner, isWaiting, onSkip }: ChatHeaderProps) {
+export function ChatHeader({ hasPartner, isWaiting, onSkip, onStop }: ChatHeaderProps) {
   return (
     <div className="border-b p-4 flex justify-between items-center">
       <div className="flex items-center gap-2">
@@ -28,12 +29,17 @@ export function ChatHeader({ hasPartner, isWaiting, onSkip }: ChatHeaderProps) {
         </span>
       </div>
       <Button
-        variant="outline"
+        variant={isWaiting ? "destructive" : "outline"}
         size="sm"
-        onClick={onSkip}
+        onClick={isWaiting ? onStop : onSkip}
         className="flex items-center gap-2"
       >
-        {hasPartner ? (
+        {isWaiting ? (
+          <>
+            <XCircle className="h-4 w-4" />
+            Stop
+          </>
+        ) : hasPartner ? (
           <>
             <SkipForward className="h-4 w-4" />
             Skip

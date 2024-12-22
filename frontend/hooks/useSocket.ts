@@ -81,8 +81,14 @@ export const useSocket = (token?: string) => {
       setIsWaiting(false);
     });
 
+    socketIo.on('searchStopped', () => {
+      setIsWaiting(false);
+    });
+
+
     // Cleanup on unmount
     return () => {
+      socketIo.off('searchStopped');
       socketIo.disconnect();
     };
   }, [token]);
@@ -104,6 +110,13 @@ export const useSocket = (token?: string) => {
   const skipChat = useCallback(() => {
     if (socket && isAuthenticated) {
       socket.emit('skipChat');
+    }
+  }, [socket, isAuthenticated]);
+
+  const stopSearching = useCallback(() => {
+    if (socket && isAuthenticated) {
+      socket.emit('stopSearching');
+      setIsWaiting(false);
     }
   }, [socket, isAuthenticated]);
 
@@ -134,6 +147,7 @@ export const useSocket = (token?: string) => {
     findChat,
     skipChat,
     sendMessage,
-    requestStats
+    requestStats,
+    stopSearching
   };
 };

@@ -13,6 +13,7 @@ export function ChatInterface() {
     sendMessage,
     currentPartner,
     findNewPartner,
+    stopSearching,
     isWaiting,
     isConnected,
     isAuthenticated
@@ -51,10 +52,11 @@ export function ChatInterface() {
         hasPartner={!!currentPartner}
         isWaiting={isWaiting}
         onSkip={findNewPartner}
+        onStop={stopSearching}
       />
       <MessageList
         messages={messages}
-        currentUserId="me"  // We now use 'me' to identify our messages
+        currentUserId="me"
       />
       <MessageInput
         onSendMessage={sendMessage}

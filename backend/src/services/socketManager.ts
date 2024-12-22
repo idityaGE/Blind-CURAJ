@@ -84,6 +84,7 @@ class SocketManager {
     socket.on('findChat', () => this.handleFindChat(socket));
     socket.on('skipChat', () => this.handleSkipChat(socket));
     socket.on('sendMessage', (message) => this.handleMessage(socket, message));
+    socket.on('stopSearching', () => this.stopSearching(socket));
 
     socket.on('disconnect', () => {
       this.handleDisconnect(socket);
@@ -206,6 +207,16 @@ class SocketManager {
     const userId = socket.data.userId;
     this.connectedUsers.delete(userId);
     this.leaveCurrentChat(socket);
+    this.broadcastStats();
+  }
+
+  private stopSearching(socket: Socket) {
+    const userId = socket.data.userId;
+
+    this.waitingUsers.delete(socket.id);
+
+    socket.emit('searchStopped');
+
     this.broadcastStats();
   }
 

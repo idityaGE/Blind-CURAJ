@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useSocket } from '@/hooks/useSocket';
 
-interface Message {
+export interface Message {
   id: string;
   content: string;
   senderId: string;
@@ -16,6 +16,7 @@ interface ChatContextType {
   sendMessage: (content: string) => void;
   currentPartner: string | null;
   findNewPartner: () => void;
+  stopSearching: () => void;
   isWaiting: boolean;
   isConnected: boolean;
   isAuthenticated: boolean;
@@ -35,14 +36,9 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
     sendMessage: socketSendMessage,
     findChat,
     skipChat,
+    stopSearching: socketStopSearching,
     socket
   } = useSocket(token);
-
-  useEffect(() => {
-    if (partnerId === null) {
-      setMessages([]);
-    }
-  }, [partnerId]);
 
   useEffect(() => {
     if (!socket || !isConnected) return;
@@ -62,10 +58,16 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
       }]);
     };
 
+    const handlePartnerDisconnect = () => {
+      // Don't clear messages when partner disconnects
+    };
+
     socket.on('message', handleMessage);
+    socket.on('partnerDisconnected', handlePartnerDisconnect);
 
     return () => {
       socket.off('message', handleMessage);
+      socket.off('partnerDisconnected', handlePartnerDisconnect);
     };
   }, [isConnected, socket, currentSessionId]);
 
@@ -83,11 +85,19 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
   };
 
   const handleFindNewPartner = () => {
+    // Clear messages when finding new chat or skipping
     setMessages([]);
     if (currentSessionId) {
       skipChat();
     } else {
       findChat();
+    }
+  };
+
+  const handleStopSearching = () => {
+    if (isWaiting) {
+      setMessages([]); // Clear any pending messages
+      socketStopSearching();
     }
   };
 
@@ -100,14 +110,14 @@ export function ChatProvider({ children, token }: { children: React.ReactNode; t
         findNewPartner: handleFindNewPartner,
         isWaiting,
         isConnected,
-        isAuthenticated
+        isAuthenticated,
+        stopSearching: handleStopSearching,
       }}
     >
       {children}
     </ChatContext.Provider>
   );
 }
-
 export const useChat = () => {
   const context = useContext(ChatContext);
   if (!context) throw new Error('useChat must be used within ChatProvider');

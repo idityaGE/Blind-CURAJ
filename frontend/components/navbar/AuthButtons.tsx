@@ -5,10 +5,10 @@ export function AuthButtons() {
   return (
     <>
       <Link href="/signin">
-        <Button variant="ghost">Sign In</Button>
+        <Button>Sign In</Button>
       </Link>
-      <Link href="/signup">
-        <Button>Sign Up</Button>
+      <Link href="/signup" className='hidden md:block'>
+        <Button variant="outline">Sign Up</Button>
       </Link>
     </>
   )

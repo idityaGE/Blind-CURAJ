@@ -6,8 +6,6 @@ import { cookies } from 'next/headers';
 import FAQ from '@/components/landing/FAQ';
 import Footer from '@/components/landing/footer';
 
-
-
 export default async function Home() {
   const user = await getUser()
   const cookieStore = await cookies();
@@ -16,14 +14,22 @@ export default async function Home() {
   return (
     <div className="max-h-screen flex flex-col">
       <Navbar user={user} />
-      <main className="bg-gradient-to-b from-background to-secondary">
+      <img
+        src="https://res.cloudinary.com/dwdbqwqxk/image/upload/v1730213921/gradient_zecf4g.webp"
+        alt="Gradient IMG"
+        className="absolute left-0 sm:left-1/2 top-0 -z-10 -translate-x-1/2 lg:scale-100 object-cover"
+      />
+      <div className='container max-w-4xl mx-auto min-h-screen flex flex-col px-4 pt-4 '>
         <div className="container mx-auto px-4 py-8 max-w-5xl">
           <LandingHero user={user} />
-          <StatsDisplay token={token} />
+          <div className='pt-14'>
+            <StatsDisplay token={token} />
+          </div>
           <FAQ />
           <Footer />
         </div>
-      </main>
+      </div>
+
     </div>
   )
 }

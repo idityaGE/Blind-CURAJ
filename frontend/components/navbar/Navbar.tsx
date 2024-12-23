@@ -23,7 +23,9 @@ export function Navbar({ user }: NavbarProps) {
         Blind CURAJ
       </Link>
       <div className="flex items-center space-x-4 md:space-x-6">
-        <GitButton />
+        <div className='hidden md:block'>
+          <GitButton />
+        </div>
         <ThemeToggle />
         {user ? <UserMenu user={user} /> : <AuthButtons />}
       </div>

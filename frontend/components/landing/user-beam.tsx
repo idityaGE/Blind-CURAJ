@@ -31,7 +31,7 @@ export function UserBeam() {
 
   return (
     <div
-      className="relative flex w-full max-w-2xl items-center justify-center overflow-hidden"
+      className="relative flex w-full max-w-2xl items-center justify-center"
       ref={containerRef}
     >
       <div className="flex size-full flex-col items-stretch justify-between gap-10">

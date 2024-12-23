@@ -18,24 +18,24 @@ export function LandingHero({ user }: LandingHeroProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center text-center space-y-8">
-      <div className="space-y-4">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-          Connect Anonymously,
+    <div className="flex flex-col items-center justify-center text-center space-y-10 py-6">
+      <div className="space-y-6">
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl leading-normal md:leading-tight">
+          Connect <span className='bg-orange-500 p-1 rounded-lg'>Anonymously,</span>
           <br />
           Chat Freely
         </h1>
-        <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-          Meet new people through random chat connections. Start meaningful conversations with strangers from around your university.
+        <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl leading-loose">
+          Meet new people through random chat connections. Start meaningful conversations with strangers from around your <span className="underline decoration-orange-500 decoration-2 underline-offset-4">university</span>.
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 mx-auto pb-4">
+      <div className="flex flex-col sm:flex-row gap-4 mx-auto pb-10">
         {user ? (
           <GitHubButton onClick={handleConnect} />
         ) : (
           <>
             <Link href="/signup">
-              <Button size="lg" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto hover:scale-105">
                 Get Started
               </Button>
             </Link>
@@ -48,14 +48,6 @@ export function LandingHero({ user }: LandingHeroProps) {
         )}
       </div>
       <UserBeam />
-      <div className="relative w-full max-w-4xl mx-auto pt-12">
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
-        <img
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80"
-          alt="Chat Preview"
-          className="w-full h-[300px] object-cover rounded-lg shadow-2xl"
-        />
-      </div>
     </div>
   );
 }

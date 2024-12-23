@@ -7,13 +7,30 @@ export async function POST(req: NextRequest) {
   try {
     const { email, pin, name } = SignUpSchema.parse(await req.json());
 
+    // Validate email domain
+    if (!email.toLowerCase().endsWith('@curaj.ac.in')) {
+      return NextResponse.json(
+        { error: 'Only CURAJ email addresses are allowed' },
+        { status: 400 }
+      );
+    }
+
+    // Validate enrollment ID format from email
+    const enrollmentId = email.split('@')[0];
+    if (!/^\d{4}[a-z]+\d{3}$/.test(enrollmentId)) {
+      return NextResponse.json(
+        { error: 'Invalid enrollment ID format' },
+        { status: 400 }
+      );
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Email already registered' },
+        { error: 'Enrollment ID already registered' },
         { status: 409 }
       );
     }
@@ -38,7 +55,6 @@ export async function POST(req: NextRequest) {
     }, { status: 201 });
 
   } catch (error: any) {
-    // Handle Zod validation errors
     if (error.issues) {
       return NextResponse.json(
         { error: 'Invalid input', details: error.issues },

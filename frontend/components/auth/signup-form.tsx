@@ -6,12 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/hooks/useAuth';
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from '@/components/ui/input-otp';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import {
   Form,
@@ -24,10 +19,13 @@ import {
 } from "@/components/ui/form"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 const SignUpSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
+  enrollmentId: z
+    .string()
+    .regex(/^\d{4}[A-Za-z]+\d{3}$/, 'Invalid enrollment ID format. Example: 2023BTCSE017'),
   pin: z.string().length(4, 'PIN must be exactly 4 digits'),
   confirmPin: z.string().length(4, 'Confirm PIN must be exactly 4 digits'),
 }).refine((data) => data.pin === data.confirmPin, {
@@ -45,7 +43,7 @@ export function SignUpForm() {
     resolver: zodResolver(SignUpSchema),
     defaultValues: {
       name: '',
-      email: '',
+      enrollmentId: '',
       pin: '',
       confirmPin: '',
     },
@@ -54,9 +52,11 @@ export function SignUpForm() {
   async function onSubmit(values: SignUpInput) {
     setIsLoading(true);
     try {
-      await signup(values.email, values.pin, values.name);
+      // Convert enrollment ID to email format
+      const email = `${values.enrollmentId.toLowerCase()}@curaj.ac.in`;
+      await signup(email, values.pin, values.name);
     } catch (error: any) {
-      form.setError('email', {
+      form.setError('enrollmentId', {
         type: 'manual',
         message: error.message,
       });
@@ -68,7 +68,7 @@ export function SignUpForm() {
     <Card className="w-full min-w-2xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Sign Up</CardTitle>
-        <CardDescription>Create your account to get started.</CardDescription>
+        <CardDescription>Create your account using your enrollment ID.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -94,21 +94,20 @@ export function SignUpForm() {
 
             <FormField
               control={form.control}
-              name="email"
+              name="enrollmentId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Enrollment ID</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      type="email"
-                      placeholder="you@example.com"
+                      placeholder="2023BTCSE017"
                       disabled={isLoading}
                       className="w-full"
                     />
                   </FormControl>
                   <FormDescription>
-                    We'll never share your email with anyone else.
+                    Enter your enrollment ID (e.g., 2023BTCSE017)
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -187,4 +186,3 @@ export function SignUpForm() {
     </Card>
   );
 }
-

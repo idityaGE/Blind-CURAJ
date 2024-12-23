@@ -18,8 +18,8 @@ interface NavbarProps {
 
 export function Navbar({ user }: NavbarProps) {
   return (
-    <nav className="flex items-center justify-between p-4 md:p-8">
-      <Link href="/" className="text-2xl font-bold">
+    <nav className="flex items-center justify-between p-4 md:p-6">
+      <Link href="/" className="text-xl md:text-2xl font-bold font-mono">
         Blind CURAJ
       </Link>
       <div className="flex items-center space-x-4 md:space-x-6">

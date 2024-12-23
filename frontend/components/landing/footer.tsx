@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Github, Twitter, Facebook } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="container mx-auto px-4 py-8">
+    <footer className="container mx-auto py-8">
       <div className="grid gap-6">
         <div className="not-prose flex flex-col gap-6">
           <Link href="/">

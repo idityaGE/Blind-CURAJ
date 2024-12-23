@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useSocket } from '@/hooks/useSocket';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, MessageCircle, Clock, UserPlus, TrendingUp, Timer } from 'lucide-react';
+import { Users, MessageCircle, Clock, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const StatsDisplay = ({ token }: { token?: string }) => {

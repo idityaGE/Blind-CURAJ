@@ -13,8 +13,10 @@ export default async function ChatPage() {
     <ChatProvider token={token}>
       <div className="flex flex-col h-screen bg-background">
         <Navbar user={user} />
-        <div className="flex-1 flex flex-col">
-          <ChatInterface />
+        <div className="flex-1 flex justify-center">
+          <div className="w-full max-w-3xl flex flex-col">
+            <ChatInterface />
+          </div>
         </div>
       </div>
     </ChatProvider>

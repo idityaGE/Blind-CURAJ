@@ -22,14 +22,12 @@ export function ChatInterface() {
   if (!isConnected) {
     return (
       <div className="flex flex-col h-full items-center justify-center">
-        <Alert>
-          <AlertDescription>
-            <div className="flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Connecting to chat server...
-            </div>
-          </AlertDescription>
-        </Alert>
+        <div className="bg-blue-50 p-6 rounded-lg shadow-lg flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+          <p className="text-blue-700 font-medium text-lg">
+            Connecting to chat server...
+          </p>
+        </div>
       </div>
     );
   }

@@ -43,7 +43,7 @@ const content: FAQItem[] = [
 const FAQ = () => {
   return (
     <div className="pt-16 pb-8 md:pt-24 md:pb-24 max-w-3xl mx-auto">
-      <BoldCopy text="FAQ" className="mb-8 bg-transparent" />
+      <BoldCopy text="FAQ" className="mb-8 bg-transparent scale-125" />
       <h4 className="text-muted-foreground">
         Can&apos;t find the answer you&apos;re looking for? Reach out to our
         customer support team.

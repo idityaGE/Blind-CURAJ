@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 
 function VerifyContent({ email }: { email: string }) {
   return (
@@ -16,6 +17,14 @@ function VerifyContent({ email }: { email: string }) {
           We've sent a verification email to <strong>{email}</strong>.
           Please check your inbox and click on the link to verify your email address.
         </p>
+        <div className="text-center">
+          <Link
+            href="/signin"
+            className="text-sm font-medium text-primary hover:text-primary/90 underline underline-offset-4"
+          >
+            Back to Sign In
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );
@@ -25,11 +34,10 @@ export default function VerifyPage({ searchParams }: { searchParams: { email?: s
   const email = searchParams.email || 'your email';
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center">
       <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin text-primary" />}>
         <VerifyContent email={email} />
       </Suspense>
     </div>
   );
 }
-

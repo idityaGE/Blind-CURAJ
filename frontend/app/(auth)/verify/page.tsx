@@ -30,8 +30,13 @@ function VerifyContent({ email }: { email: string }) {
   );
 }
 
-export default function VerifyPage({ searchParams }: { searchParams: { email?: string } }) {
-  const email = searchParams.email || 'your email';
+export default async function VerifyPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ email?: string }>;
+}) {
+  const resolvedParams = await searchParams;
+  const email = resolvedParams.email || 'your email';
 
   return (
     <div className="flex items-center justify-center">

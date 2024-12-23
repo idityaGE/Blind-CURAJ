@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid PIN' }, { status: 401 });
     }
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = await generateToken({ id: user.id, email: user.email });
 
     // Create response
     const response = NextResponse.json({

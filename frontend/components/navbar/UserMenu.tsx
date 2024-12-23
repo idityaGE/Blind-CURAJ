@@ -43,13 +43,14 @@ export function UserMenu({ user }: UserMenuProps) {
       })
       // Optionally redirect after successful logout
       router.push('/')
-    } catch (error) {
+    } catch (error : any) {
       toast({
         variant: "destructive",
         title: "Error logging out",
         description: "Please try again later",
         duration: 3000,
       })
+      console.error(error)
     }
   }
 

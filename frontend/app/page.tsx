@@ -5,6 +5,7 @@ import StatsDisplay from '@/components/landing/online-users';
 import { cookies } from 'next/headers';
 import FAQ from '@/components/landing/FAQ';
 import Footer from '@/components/landing/footer';
+import Image from 'next/image';
 
 export default async function Home() {
   const user = await getUser()
@@ -14,7 +15,9 @@ export default async function Home() {
   return (
     <div className="max-h-screen flex flex-col">
       <Navbar user={user} />
-      <img
+      <Image
+        width={1920}
+        height={1080}
         src="https://res.cloudinary.com/dwdbqwqxk/image/upload/v1730213921/gradient_zecf4g.webp"
         alt="Gradient IMG"
         className="absolute left-0 sm:left-1/2 top-0 -z-10 -translate-x-1/2 lg:scale-100 object-cover"

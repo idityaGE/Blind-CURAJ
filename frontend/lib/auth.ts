@@ -12,13 +12,14 @@ export async function getUser() {
       return null;
     }
 
-    const decoded = verifyToken(token.value);
+    const decoded = await verifyToken(token.value);
+
     if (!decoded || typeof decoded === 'string') {
       return null;
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
+      where: { id: decoded.id as string },
       select: {
         id: true,
         email: true,

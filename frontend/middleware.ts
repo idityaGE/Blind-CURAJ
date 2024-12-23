@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
   // For protected routes or when token exists, verify the token
   if (token && (isProtectedPath || !isAuthPath)) {
     try {
-      const decoded = verifyToken(token.value);
+      const decoded = await verifyToken(token.value);
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set('user', JSON.stringify(decoded));
 

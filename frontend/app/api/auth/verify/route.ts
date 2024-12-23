@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = await generateToken({ id: user.id, email: user.email });
 
     // Create response with absolute URL
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';

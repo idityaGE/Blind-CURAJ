@@ -9,12 +9,12 @@ function VerifyContent({ email }: { email: string }) {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Verify Your Email</CardTitle>
         <CardDescription className="text-center">
-          We've sent a verification link to your email
+          We&apos;ve sent a verification link to your email
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-center text-sm text-muted-foreground">
-          We've sent a verification email to <strong>{email}</strong>.
+          We&apos;ve sent a verification email to <strong>{email}</strong>.
           Please check your inbox and click on the link to verify your email address.
         </p>
         <div className="text-center">

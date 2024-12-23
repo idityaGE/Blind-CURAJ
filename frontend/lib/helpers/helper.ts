@@ -1,22 +1,33 @@
+import { SignJWT, jwtVerify } from 'jose';
 import { hash, compare } from 'bcryptjs';
-import { sign, verify } from 'jsonwebtoken';
 
+// Create a TextEncoder instance
+const encoder = new TextEncoder();
 
 // JWT Token
-export const generateToken = (payload: any) => {
-  const token = sign(payload, process.env.JWT_SECRET!);
-  return token;
-}
-
-export const verifyToken = (token: string) => {
+export const generateToken = async (payload: any) => {
   try {
-    const payload = verify(token, process.env.JWT_SECRET!);
-    return payload;
+    const secret = encoder.encode(process.env.JWT_SECRET!);
+    const token = await new SignJWT(payload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .sign(secret);
+    return token;
   } catch (error) {
-    console.error('Error verifying token:', error);
+    console.error('Error generating token:', error);
+    throw error;
   }
 }
 
+export const verifyToken = async (token: string) => {
+  try {
+    const secret = encoder.encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    throw error;
+  }
+}
 
 // Hashing and Verifying PIN
 export const hashPin = async (pin: string) => {
@@ -25,6 +36,7 @@ export const hashPin = async (pin: string) => {
     return hashedPin;
   } catch (error) {
     console.error('Error hashing pin:', error);
+    throw error;
   }
 }
 
@@ -34,6 +46,7 @@ export const verifyPin = async (pin: string, hashedPin: string) => {
     return isValid;
   } catch (error) {
     console.error('Error verifying pin:', error);
+    throw error;
   }
 }
 

@@ -19,24 +19,27 @@ export async function checkRateLimit(email: string): Promise<{
   const key = `email_resend:${email}`
   const now = Math.floor(Date.now() / 1000)
 
-  // Get current attempts
+  // Get current attempts with scores
   const entries = await redis.zrange(key, 0, -1, {
     withScores: true,
   })
 
-  // Clean up old entries
-  //@ts-ignore
-  const validEntries = entries.filter(([_, timestamp]) => {
-    return timestamp > now - RATE_LIMIT.WINDOW_SECONDS
-  })
+  // Handle Redis response format properly
+  // Redis returns array in format [member1, score1, member2, score2, ...]
+  const validEntries = []
+  for (let i = 0; i < entries.length; i += 2) {
+    const timestamp = entries[i + 1] as number
+    if (timestamp > now - RATE_LIMIT.WINDOW_SECONDS) {
+      validEntries.push(timestamp)
+    }
+  }
 
   // Count valid attempts
   const attemptCount = validEntries.length
 
   if (attemptCount >= RATE_LIMIT.MAX_ATTEMPTS) {
     // Get oldest timestamp to calculate reset time
-    //@ts-ignore
-    const oldestTimestamp = validEntries[0]?.[1] || now
+    const oldestTimestamp = validEntries[0] || now
     const reset = Math.floor(oldestTimestamp) + RATE_LIMIT.WINDOW_SECONDS
 
     return {

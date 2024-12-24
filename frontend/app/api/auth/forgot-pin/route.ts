@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { generateResetToken } from '@/helpers/helper';
 import { sendMail } from '@/services/mail/mail';
-
+import { checkRateLimit, recordAttempt } from '@/utils/rateLimit';
 
 export async function POST(req: Request) {
   try {
@@ -15,16 +15,52 @@ export async function POST(req: Request) {
       );
     }
 
+    // Validate email format
+    if (!email.endsWith('@curaj.ac.in')) {
+      return NextResponse.json(
+        { error: 'Invalid email domain. Must be a CURAJ email address.' },
+        { status: 400 }
+      );
+    }
+
+    // Extract and validate enrollment ID
+    const enrollmentId = email.split('@')[0].toUpperCase();
+    const enrollmentIdRegex = /^\d{4}[A-Za-z]+\d{3}$/;
+    if (!enrollmentIdRegex.test(enrollmentId)) {
+      return NextResponse.json(
+        { error: 'Invalid enrollment ID format' },
+        { status: 400 }
+      );
+    }
+
+    // Check rate limit
+    const rateLimitResult = await checkRateLimit(email);
+    if (!rateLimitResult.success) {
+      const retryAfter = Math.ceil((rateLimitResult.reset - Math.floor(Date.now() / 1000)) / 60);
+      return NextResponse.json(
+        {
+          error: 'Too many reset attempts',
+          retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.reset.toString()
+          }
+        }
+      );
+    }
+
     // Find user
     const user = await prisma.user.findUnique({
       where: { email }
     });
 
     if (!user) {
-      return NextResponse.json(
-        { error: 'No account found with this email' },
-        { status: 404 }
-      );
+      // For security, don't reveal whether the account exists
+      return NextResponse.json({
+        message: 'If an account exists with this enrollment ID, you will receive PIN reset instructions.'
+      });
     }
 
     if (!user.isVerified) {
@@ -55,7 +91,7 @@ export async function POST(req: Request) {
       subject: 'Reset Your PIN',
       html: `
         <h1>PIN Reset Request</h1>
-        <h2>From : Blind CURAJ</h2>
+        <h2>From: Blind CURAJ</h2>
         <p>Click the link below to reset your PIN. This link will expire in 30 minutes:</p>
         <a href="${resetUrl}">${resetUrl}</a>
         <p>If you didn't request this, please ignore this email.</p>
@@ -67,8 +103,11 @@ export async function POST(req: Request) {
       throw new Error('Failed to send reset email');
     }
 
+    // Record the attempt only after successful email send
+    await recordAttempt(email);
+
     return NextResponse.json({
-      message: 'Reset instructions sent to your email'
+      message: 'If an account exists with this enrollment ID, you will receive PIN reset instructions.'
     });
 
   } catch (error) {

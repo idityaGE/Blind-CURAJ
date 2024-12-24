@@ -86,5 +86,59 @@ export const useAuth = () => {
     }
   }
 
-  return { signin, logout, signup, resendVerificationEmail };
+  const forgotPin = async (email: string) => {
+    try {
+      const response = await fetch('/api/auth/forgot-pin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error(`Rate limit exceeded. Please try again in ${data.retryAfter} minutes.`);
+        }
+        throw new Error(data.error || 'Failed to process request');
+      }
+
+      router.push('/');
+    } catch (error: any) {
+      throw error;
+    }
+  };
+
+  const resetPin = async (token: string, newPin: string) => {
+    try {
+      const response = await fetch('/api/auth/reset-pin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token, newPin }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to reset PIN');
+      }
+
+      return data;
+    } catch (error: any) {
+      throw error;
+    }
+  };
+
+  return {
+    signin,
+    logout,
+    signup,
+    resendVerificationEmail,
+    forgotPin,
+    resetPin,
+  };
 };

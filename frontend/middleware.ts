@@ -6,7 +6,7 @@ import { verifyToken } from '@/helpers/helper';
 const protectedPaths = ['/chat', '/profile', '/settings'];
 
 // Define authentication paths
-const authPaths = ['/signin', '/signup', '/verify'];
+const authPaths = ['/signin', '/signup', '/verify', '/forgot-pin', '/reset-pin'];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
@@ -27,8 +27,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/signin', request.url));
   }
 
-  // If has token and trying to access auth routes
+  // If has token and trying to access auth routes (including forgot/reset pin)
   if (token && isAuthPath) {
+    // Special handling for reset-pin with token
+    if (pathname.startsWith('/reset-pin') && request.nextUrl.searchParams.has('token')) {
+      // Allow access to reset-pin with valid token even if user is logged in
+      return NextResponse.next();
+    }
     return NextResponse.redirect(new URL('/', request.url));
   }
 
@@ -50,6 +55,11 @@ export async function middleware(request: NextRequest) {
       response.cookies.delete('token');
       return response;
     }
+  }
+
+  // Special handling for reset-pin without token in URL
+  if (pathname.startsWith('/reset-pin') && !request.nextUrl.searchParams.has('token')) {
+    return NextResponse.redirect(new URL('/forgot-pin', request.url));
   }
 
   return NextResponse.next();

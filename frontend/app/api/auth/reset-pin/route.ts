@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
 import { verifyResetToken } from '@/helpers/helper';
 import { hashPin } from '@/helpers/helper';
-
+import { checkRateLimit, recordAttempt } from '@/utils/rateLimit';
 
 export async function POST(req: Request) {
   try {
@@ -36,6 +36,24 @@ export async function POST(req: Request) {
       );
     }
 
+    // Check rate limit using user's email
+    const rateLimitResult = await checkRateLimit(user.email);
+    if (!rateLimitResult.success) {
+      const retryAfter = Math.ceil((rateLimitResult.reset - Math.floor(Date.now() / 1000)) / 60);
+      return NextResponse.json(
+        {
+          error: 'Too many reset attempts',
+          retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.reset.toString()
+          }
+        }
+      );
+    }
+
     // Hash new PIN
     const hashedPin = await hashPin(newPin);
     if (!hashedPin) {
@@ -51,6 +69,9 @@ export async function POST(req: Request) {
         resetTokenExpiry: null
       }
     });
+
+    // Record the attempt only after successful PIN reset
+    await recordAttempt(user.email);
 
     return NextResponse.json({
       message: 'PIN successfully reset'

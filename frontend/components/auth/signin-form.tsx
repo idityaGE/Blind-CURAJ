@@ -119,9 +119,20 @@ export function SignInForm() {
               )}
             />
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </Button>
+            <div className="space-y-4">
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Signing in...' : 'Sign In'}
+              </Button>
+
+              <div className="text-center">
+                <Link
+                  href="/forgot-pin"
+                  className="text-sm text-primary hover:underline"
+                >
+                  Forgot PIN?
+                </Link>
+              </div>
+            </div>
           </form>
         </Form>
       </CardContent>

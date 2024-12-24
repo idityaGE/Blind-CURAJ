@@ -45,7 +45,7 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
                 ${disabled ? 'opacity-50' : 'hover:border-primary/50 focus-visible:border-primary'}
               `}
             />
-            <div className="absolute right-3 top-[58%] -translate-y-1/2">
+            <div className="absolute right-3 top-[50%] -translate-y-1/2">
               <EmojiPicker
                 onChange={(emoji) => setMessageInput((prev) => prev + emoji)}
                 disabled={disabled}

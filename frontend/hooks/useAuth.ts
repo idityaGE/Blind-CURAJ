@@ -61,5 +61,30 @@ export const useAuth = () => {
     }
   };
 
-  return { signin, logout, signup };
+  const resendVerificationEmail = async (email: string) => {
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error(`Rate limit exceeded. Please try again in ${data.retryAfter} minutes.`);
+        }
+        throw new Error(data.error || 'Failed to resend verification email');
+      }
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  return { signin, logout, signup, resendVerificationEmail };
 };

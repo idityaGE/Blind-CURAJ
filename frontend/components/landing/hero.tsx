@@ -20,8 +20,8 @@ export function LandingHero({ user }: LandingHeroProps) {
   return (
     <div className="flex flex-col items-center justify-center text-center space-y-10 py-6">
       <div className="space-y-6">
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl leading-normal md:leading-tight">
-          Connect <span className='bg-orange-500 p-1 rounded-lg'>Anonymously,</span>
+        <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl leading-normal md:leading-tight lg:leading-snug">
+          Connect <span className='bg-orange-500 p-1/2 rounded-lg'>Anonymously,</span>
           <br />
           Chat Freely
         </h1>

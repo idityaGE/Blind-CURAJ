@@ -13,7 +13,7 @@ export default async function Home() {
   const token = cookieStore.get('token')?.value;
 
   return (
-    <div className="max-h-screen flex flex-col">
+    <div className="max-h-screen flex flex-col w-full relative">
       <Navbar user={user} />
       <Image
         width={1920}
@@ -22,7 +22,7 @@ export default async function Home() {
         alt="Gradient IMG"
         className="absolute left-0 sm:left-1/2 top-0 -z-10 -translate-x-1/2 lg:scale-100 object-cover"
       />
-      <div className='container max-w-4xl mx-auto min-h-screen flex flex-col px-4 pt-4 '>
+      <div className='container max-w-4xl mx-auto min-h-screen flex flex-col pt-4'>
         <div className="container mx-auto px-4 py-8 max-w-5xl">
           <LandingHero user={user} />
           <div className='pt-14'>

@@ -40,10 +40,10 @@ export function UserMenu({ user }: UserMenuProps) {
         title: "Logged out successfully",
         description: "You have been logged out of your account",
         duration: 3000,
+        className: "bg-accent text-accent-foreground",
       })
-      // Optionally redirect after successful logout
       router.push('/')
-    } catch (error : any) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error logging out",
@@ -64,7 +64,7 @@ export function UserMenu({ user }: UserMenuProps) {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-64 p-2">
+      <DropdownMenuContent align="end" className="w-64 p-2 ">
         <DropdownMenuLabel className="font-bold text-lg pb-2">My Account</DropdownMenuLabel>
         <DropdownMenuSeparator className="my-2" />
         <DropdownMenuItem className="cursor-pointer hover:bg-accent rounded-md transition-colors">

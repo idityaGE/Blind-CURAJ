@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Send } from 'lucide-react';
-import { EmojiPicker } from '../emoji-picker';
+import { EmojiPickerComponent } from '../emoji-picker';
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
@@ -45,8 +45,8 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
                 ${disabled ? 'opacity-50' : 'hover:border-primary/50 focus-visible:border-primary'}
               `}
             />
-            <div className="absolute right-3 top-[50%] -translate-y-1/2">
-              <EmojiPicker
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
+              <EmojiPickerComponent
                 onChange={(emoji) => setMessageInput((prev) => prev + emoji)}
                 disabled={disabled}
               />

@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { verifyToken } from '@/helpers/helper';
 
 // Define protected paths that need authentication
-const protectedPaths = ['/chat', '/profile', '/settings'];
+const protectedPaths = ['/chat'];
 
 // Define authentication paths
 const authPaths = ['/signin', '/signup', '/verify', '/forgot-pin', '/reset-pin'];

@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { verifyToken } from '@/lib/helpers/helper';
+import { verifyToken } from '@/helpers/helper';
 import { prisma } from '@/lib/db/prisma';
 
 // server-side getUser

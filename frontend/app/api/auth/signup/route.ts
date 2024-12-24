@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser } from '@/lib/helpers/create-user';
+import { createUser } from '../../../../helpers/create-user';
 import { SignUpSchema } from '@/types/user';
 import { prisma } from '@/lib/db/prisma';
 

@@ -1,6 +1,6 @@
 import { Tourney } from "next/font/google";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 const tourney = Tourney({
   subsets: ["latin"],

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { checkRateLimit, recordAttempt } from '@/lib/rateLimit'
+import { checkRateLimit, recordAttempt } from '@/utils/rateLimit'
 import { prisma } from '@/lib/db/prisma'
 import { sendMail } from '@/services/mail/mail'
 

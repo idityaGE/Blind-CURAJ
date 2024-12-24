@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { verifyToken } from '@/lib/helpers/helper';
+import { verifyToken } from '@/helpers/helper';
 
 // Define protected paths that need authentication
 const protectedPaths = ['/chat', '/profile', '/settings'];

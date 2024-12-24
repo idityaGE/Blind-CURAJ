@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSocket } from '@/hooks/useSocket';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, MessageCircle, Clock, UserPlus } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 
 const StatsDisplay = ({ token }: { token?: string }) => {
   const { stats, isConnected, requestStats } = useSocket(token || undefined);

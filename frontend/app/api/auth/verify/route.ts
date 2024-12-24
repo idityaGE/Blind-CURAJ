@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
-import { generateToken } from '@/lib/helpers/helper';
+import { generateToken } from '@/helpers/helper';
 
 export async function GET(req: NextRequest) {
   try {

@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db/prisma';
 import { sendMail } from '@/services/mail/mail';
-import { generateVerifyToken, hashPin } from '@/lib/helpers/helper';
+import { generateVerifyToken, hashPin } from '@/helpers/helper';
 
 export const createUser = async (email: string, pin: string, name?: string) => {
   const hashedPin = await hashPin(pin);

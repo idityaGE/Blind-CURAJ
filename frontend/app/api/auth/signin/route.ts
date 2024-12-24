@@ -1,8 +1,8 @@
 import { prisma } from '@/lib/db/prisma';
-import { verifyPin } from '@/lib/helpers/helper';
+import { verifyPin } from '@/helpers/helper';
 import { NextRequest, NextResponse } from 'next/server';
 import { SignInSchema } from '@/types/user';
-import { generateToken } from '@/lib/helpers/helper';
+import { generateToken } from '@/helpers/helper';
 
 export async function POST(req: NextRequest) {
   try {

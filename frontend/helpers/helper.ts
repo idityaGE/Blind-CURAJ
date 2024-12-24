@@ -4,6 +4,29 @@ import { hash, compare } from 'bcryptjs';
 // Create a TextEncoder instance
 const encoder = new TextEncoder();
 
+const alg = 'HS256';
+
+export async function generateResetToken(userId: string): Promise<string> {
+  const secret = encoder.encode(process.env.JWT_SECRET!);
+  const jwt = await new SignJWT({ userId })
+    .setProtectedHeader({ alg })
+    .setIssuedAt()
+    .setExpirationTime('30m') // Token expires in 30 minutes
+    .sign(secret);
+
+  return jwt;
+}
+
+export async function verifyResetToken(token: string): Promise<string> {
+  try {
+    const secret = encoder.encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
+    return payload.userId as string;
+  } catch (error) {
+    throw new Error('Invalid or expired reset token');
+  }
+}
+
 // JWT Token
 export const generateToken = async (payload: any) => {
   try {

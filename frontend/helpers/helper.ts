@@ -1,9 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
-import { hash, compare } from 'bcryptjs';
 
-// Create a TextEncoder instance
 const encoder = new TextEncoder();
-
 const alg = 'HS256';
 
 export async function generateResetToken(userId: string): Promise<string> {
@@ -11,7 +8,7 @@ export async function generateResetToken(userId: string): Promise<string> {
   const jwt = await new SignJWT({ userId })
     .setProtectedHeader({ alg })
     .setIssuedAt()
-    .setExpirationTime('30m') // Token expires in 30 minutes
+    .setExpirationTime('30m')
     .sign(secret);
 
   return jwt;
@@ -27,8 +24,7 @@ export async function verifyResetToken(token: string): Promise<string> {
   }
 }
 
-// JWT Token
-export const generateToken = async (payload: any) => {
+export const generateToken = async (payload: any): Promise<string> => {
   try {
     const secret = encoder.encode(process.env.JWT_SECRET!);
     const token = await new SignJWT(payload)
@@ -39,9 +35,9 @@ export const generateToken = async (payload: any) => {
     console.error('Error generating token:', error);
     throw error;
   }
-}
+};
 
-export const verifyToken = async (token: string) => {
+export const verifyToken = async (token: string): Promise<any> => {
   try {
     const secret = encoder.encode(process.env.JWT_SECRET!);
     const { payload } = await jwtVerify(token, secret);
@@ -50,31 +46,35 @@ export const verifyToken = async (token: string) => {
     console.error('Error verifying token:', error);
     throw error;
   }
-}
+};
 
-// Hashing and Verifying PIN
-export const hashPin = async (pin: string) => {
+// Edge-compatible PIN hashing using Web Crypto API
+export const hashPin = async (pin: string): Promise<string> => {
   try {
-    const hashedPin = await hash(pin, 10);
-    return hashedPin;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(pin);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
   } catch (error) {
     console.error('Error hashing pin:', error);
     throw error;
   }
-}
+};
 
-export const verifyPin = async (pin: string, hashedPin: string) => {
+export const verifyPin = async (pin: string, hashedPin: string): Promise<boolean> => {
   try {
-    const isValid = await compare(pin, hashedPin);
-    return isValid;
+    const newHash = await hashPin(pin);
+    return newHash === hashedPin;
   } catch (error) {
     console.error('Error verifying pin:', error);
     throw error;
   }
-}
+};
 
-export const generateVerifyToken = async () => {
+export const generateVerifyToken = async (): Promise<string> => {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-}
+};

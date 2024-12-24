@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +32,8 @@ const ResetPinSchema = z.object({
 
 type ResetPinInput = z.infer<typeof ResetPinSchema>;
 
-export const ResetPinForm = () => {
+// Separate component for the form content
+const ResetPinFormContent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -78,77 +79,86 @@ export const ResetPinForm = () => {
   };
 
   return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="pin"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>New PIN</FormLabel>
+              <FormControl>
+                <InputOTP
+                  maxLength={4}
+                  pattern={REGEXP_ONLY_DIGITS}
+                  {...field}
+                  className="flex justify-center gap-2"
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormDescription>Enter your new 4-digit PIN</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="confirmPin"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Confirm PIN</FormLabel>
+              <FormControl>
+                <InputOTP
+                  maxLength={4}
+                  pattern={REGEXP_ONLY_DIGITS}
+                  {...field}
+                  className="flex justify-center gap-2"
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </FormControl>
+              <FormDescription>Confirm your new 4-digit PIN</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Resetting...' : 'Reset PIN'}
+        </Button>
+      </form>
+    </Form>
+  );
+};
+
+// Main component with Suspense
+export const ResetPinForm = () => {
+  return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Reset PIN</CardTitle>
         <CardDescription>Enter your new PIN below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="pin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>New PIN</FormLabel>
-                  <FormControl>
-                    <InputOTP
-                      maxLength={4}
-                      pattern={REGEXP_ONLY_DIGITS}
-                      {...field}
-                      className="flex justify-center gap-2"
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </FormControl>
-                  <FormDescription>Enter your new 4-digit PIN</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPin"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirm PIN</FormLabel>
-                  <FormControl>
-                    <InputOTP
-                      maxLength={4}
-                      pattern={REGEXP_ONLY_DIGITS}
-                      {...field}
-                      className="flex justify-center gap-2"
-                    >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                      </InputOTPGroup>
-                    </InputOTP>
-                  </FormControl>
-                  <FormDescription>Confirm your new 4-digit PIN</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Resetting...' : 'Reset PIN'}
-            </Button>
-          </form>
-        </Form>
+        <Suspense fallback={<div>Loading...</div>}>
+          <ResetPinFormContent />
+        </Suspense>
       </CardContent>
     </Card>
   );

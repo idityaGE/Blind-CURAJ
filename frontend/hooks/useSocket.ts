@@ -24,7 +24,7 @@ export const useSocket = (token?: string) => {
   const [isWaiting, setIsWaiting] = useState(false);
 
   useEffect(() => {
-    const socketIo = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000', {
+    const socketIo = io(process.env.PUBLIC_SOCKET_URL || 'http://localhost:4000', {
       auth: token ? { token } : undefined
     });
 

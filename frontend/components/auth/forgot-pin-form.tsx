@@ -68,7 +68,7 @@ export const ForgotPinForm = () => {
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Forgot PIN</CardTitle>
         <CardDescription>
-          Enter your enrollment ID and we'll send you a link to reset your PIN.
+          Enter your enrollment ID and we&apos;ll send you a link to reset your PIN.
         </CardDescription>
       </CardHeader>
       <CardContent>

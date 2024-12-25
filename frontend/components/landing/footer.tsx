@@ -11,11 +11,11 @@ export default function Footer() {
           <Link href="/">
             <h3 className="sr-only">University Chat Platform</h3>
             <Image
-              src="https://components.bridger.to/_next/static/media/logo.f5329ef0.svg"
+              src="/logo1.png"
               alt="University Chat Logo"
               width={120}
               height={27.27}
-              className="transition-all hover:opacity-75 dark:invert"
+              className="transition-all hover:opacity-75 invert dark:invert-0"
             />
           </Link>
           <div>

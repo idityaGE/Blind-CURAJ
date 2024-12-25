@@ -23,6 +23,7 @@ class SocketManager {
         // Handle all connections initially as public
         this.io.on('connection', (socket) => {
             this.handlePublicConnection(socket);
+            console.log(`New connection: ${socket.id}`);
             // If authentication token is provided, upgrade to authenticated connection
             if (socket.handshake.auth.token) {
                 this.upgradeToAuthenticatedConnection(socket);

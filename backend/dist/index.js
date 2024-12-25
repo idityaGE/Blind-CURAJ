@@ -6,14 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_1 = require("socket.io");
 const http_1 = __importDefault(require("http"));
 const socketManager_1 = __importDefault(require("./services/socketManager"));
-const server = http_1.default.createServer();
+const server = http_1.default.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'ok' }));
+    }
+});
 const io = new socket_io_1.Server(server, {
     cors: {
         origin: '*',
-        credentials: true
-    }
+    },
 });
 new socketManager_1.default(io);
-server.listen(4000, () => {
-    console.log('WebSocket server running on port 4000');
-});
+server.listen(process.env.PORT || 3000, () => console.log(`Server is running on port ${process.env.PORT || 3000}`));

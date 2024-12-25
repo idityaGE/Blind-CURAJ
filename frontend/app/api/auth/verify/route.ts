@@ -20,14 +20,16 @@ export async function GET(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid verification token' },
+        { error: 'Invalid verification token or Already been Verified' },
         { status: 400 }
       );
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    console.log('baseUrl:', baseUrl);
+
     if (user.isVerified) {
       // Use the new URL() constructor for better URL handling
-      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
       return NextResponse.redirect(new URL('/', baseUrl), {
         status: 302,
       });
@@ -46,7 +48,6 @@ export async function GET(req: NextRequest) {
     const token = await generateToken({ id: user.id, email: user.email });
 
     // Create response with absolute URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const response = NextResponse.redirect(new URL('/', baseUrl), {
       status: 302,
     });

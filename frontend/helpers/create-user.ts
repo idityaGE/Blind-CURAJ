@@ -22,7 +22,7 @@ export const createUser = async (email: string, pin: string, name?: string) => {
       },
     });
 
-    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${verifyToken}`;
+    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${verifyToken}`;
 
     const mailOptions = {
       to: email,

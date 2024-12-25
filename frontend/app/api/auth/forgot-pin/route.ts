@@ -84,7 +84,7 @@ export async function POST(req: Request) {
     });
 
     // Send reset email
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-pin?token=${resetToken}`;
+    const resetUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/reset-pin?token=${resetToken}`;
 
     const mailOptions = {
       to: email,

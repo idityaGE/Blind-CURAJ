@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${user.verifyToken}`
+    const verificationUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify?token=${user.verifyToken}`
 
     const mailOptions = {
       to: email,

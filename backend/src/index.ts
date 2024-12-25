@@ -11,13 +11,18 @@ const server = http.createServer((req, res) => {
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: [
+      "https://blind-curaj.vercel.app",
+      "http://localhost:3000" // Keep this for local development
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   },
 });
 
 new SocketManager(io);
 
 server.listen(
-  process.env.PORT || 3000,
-  () => console.log(`Server is running on port ${process.env.PORT || 3000}`)
+  process.env.PORT || 8080,
+  () => console.log(`Server is running on port ${process.env.PORT || 8080}`)
 );

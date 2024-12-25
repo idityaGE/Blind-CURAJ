@@ -24,8 +24,17 @@ export const useSocket = (token?: string) => {
   const [isWaiting, setIsWaiting] = useState(false);
 
   useEffect(() => {
-    const socketIo = io(process.env.PUBLIC_SOCKET_URL || 'http://localhost:4000', {
-      auth: token ? { token } : undefined
+    const socketIo = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:8080', {
+      auth: token ? { token } : undefined,
+      transports: ['websocket', 'polling']
+    });
+
+    socketIo.on('connect_error', (error: any) => {
+      console.error('Socket connection error:', error);
+    });
+
+    socketIo.on('connect_timeout', () => {
+      console.error('Socket connection timeout');
     });
 
     socketIo.on('connect', () => {

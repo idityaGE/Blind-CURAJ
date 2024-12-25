@@ -26,7 +26,8 @@ export const useSocket = (token?: string) => {
   useEffect(() => {
     const socketIo = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:8080', {
       auth: token ? { token } : undefined,
-      transports: ['websocket', 'polling']
+      transports: ['websocket', 'polling'],
+      secure: false
     });
 
     socketIo.on('connect_error', (error: any) => {

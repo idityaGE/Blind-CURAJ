@@ -22,25 +22,22 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(path)
   );
 
-  // If no token and trying to access protected route
-  if (!token && isProtectedPath) {
-    return NextResponse.redirect(new URL('/signin', request.url));
-  }
-
-  // If has token and trying to access auth routes (including forgot/reset pin)
-  if (token && isAuthPath) {
-    // Special handling for reset-pin with token
-    if (pathname.startsWith('/reset-pin') && request.nextUrl.searchParams.has('token')) {
-      // Allow access to reset-pin with valid token even if user is logged in
-      return NextResponse.next();
-    }
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // For protected routes or when token exists, verify the token
-  if (token && (isProtectedPath || !isAuthPath)) {
+  // Handle token validation first if token exists
+  if (token) {
     try {
       const decoded = await verifyToken(token.value);
+
+      // Token is valid - handle different paths
+      if (isAuthPath) {
+        // Special handling for reset-pin with token parameter
+        if (pathname.startsWith('/reset-pin') && request.nextUrl.searchParams.has('token')) {
+          return NextResponse.next();
+        }
+        // Redirect to home if trying to access auth paths with valid token
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+
+      // For all other paths with valid token, proceed with user data
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set('user', JSON.stringify(decoded));
 
@@ -50,11 +47,17 @@ export async function middleware(request: NextRequest) {
         },
       });
     } catch (error) {
-      // Clear invalid token and allow access to auth paths
+      // Invalid token - clear it and redirect to signin
       const response = NextResponse.redirect(new URL('/signin', request.url));
       response.cookies.delete('token');
       return response;
     }
+  }
+
+  // Handle cases without token
+  if (isProtectedPath) {
+    // Redirect to signin if trying to access protected route without token
+    return NextResponse.redirect(new URL('/signin', request.url));
   }
 
   // Special handling for reset-pin without token in URL
@@ -62,6 +65,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/forgot-pin', request.url));
   }
 
+  // Allow access to public routes and auth routes without token
   return NextResponse.next();
 }
 

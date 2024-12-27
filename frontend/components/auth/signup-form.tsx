@@ -20,12 +20,13 @@ import {
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { studentEmailConfig } from '@/config/student-email.config';
 
 const SignUpSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
   enrollmentId: z
     .string()
-    .regex(/^\d{4}[A-Za-z]+\d{3}$/, 'Invalid enrollment ID format. Example: 2023BTCSE017'),
+    .regex(studentEmailConfig.localPart.regex, `Invalid enrollment ID format. Example: ${studentEmailConfig.localPart.example}`),
   pin: z.string().length(4, 'PIN must be exactly 4 digits'),
   confirmPin: z.string().length(4, 'Confirm PIN must be exactly 4 digits'),
 }).refine((data) => data.pin === data.confirmPin, {
@@ -53,7 +54,7 @@ export function SignUpForm() {
     setIsLoading(true);
     try {
       // Convert enrollment ID to email format
-      const email = `${values.enrollmentId.toLowerCase()}@curaj.ac.in`;
+      const email = `${values.enrollmentId.toLowerCase()}@${studentEmailConfig.domainName}`;
       await signup(email, values.pin, values.name);
     } catch (error: any) {
       form.setError('enrollmentId', {
@@ -82,7 +83,7 @@ export function SignUpForm() {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="John Doe"
+                      placeholder='Anonymous'
                       disabled={isLoading}
                       className="w-full"
                     />
@@ -101,13 +102,13 @@ export function SignUpForm() {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="2023BTCSE017"
+                      placeholder={studentEmailConfig.localPart.example}
                       disabled={isLoading}
                       className="w-full"
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter your enrollment ID (e.g., 2023BTCSE017)
+                    Enter your enrollment ID (e.g., {studentEmailConfig.localPart.example}).
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

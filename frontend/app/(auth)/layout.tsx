@@ -1,6 +1,7 @@
 import React from 'react';
 import { HomeIcon } from 'lucide-react';
 import Link from 'next/link';
+import { studentEmailConfig } from '@/config/student-email.config';
 
 export default function AuthLayout({
   children
@@ -18,7 +19,7 @@ export default function AuthLayout({
           >
             <HomeIcon className="w-8 h-8 text-primary-foreground" />
           </Link>
-          <h1 className="text-2xl font-bold text-foreground font-mono">Blind CURAJ</h1>
+          <h1 className="text-2xl font-bold text-foreground font-mono">Blind {studentEmailConfig.college.shortHand}</h1>
         </div>
 
         {/* Main content area with card effect */}
@@ -47,10 +48,10 @@ export default function AuthLayout({
             <p className="text-sm text-muted-foreground">
               Need help? Contact{' '}
               <a
-                href="mailto:am44910606@gmail.com"
+                href={`mailto:${studentEmailConfig.support_email}`}
                 className="font-medium text-primary hover:text-primary/80 transition-colors"
               >
-                am44910606@gmail.com
+                {studentEmailConfig.support_email}
               </a>
             </p>
           </div>

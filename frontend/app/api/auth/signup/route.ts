@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser } from '../../../../helpers/create-user';
+import { createUser } from '@/helpers/create-user';
 import { SignUpSchema } from '@/types/user';
 import { prisma } from '@/lib/db/prisma';
+import { studentEmailConfig } from '@/config/student-email.config';
 
 export async function POST(req: NextRequest) {
   try {
     const { email, pin, name } = SignUpSchema.parse(await req.json());
 
     // Validate email domain
-    if (!email.toLowerCase().endsWith('@curaj.ac.in')) {
+    if (!email.toLowerCase().endsWith(`@${studentEmailConfig.domainName}`)) {
       return NextResponse.json(
-        { error: 'Only CURAJ email addresses are allowed' },
+        { error: `Only ${studentEmailConfig.college.shortHand} email addresses are allowed` },
         { status: 400 }
       );
     }

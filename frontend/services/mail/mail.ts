@@ -1,3 +1,4 @@
+import { studentEmailConfig } from '@/config/student-email.config';
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
@@ -24,7 +25,7 @@ export const sendMail = async ({
 }: MailOptions): Promise<boolean> => {
   try {
     const info = await transporter.sendMail({
-      from: `"Adi 🍀" <${process.env.MAIL_USER}>`,
+      from: `"Blind ${studentEmailConfig.college.shortHand} 🍀" <${process.env.MAIL_USER}>`,
       to,
       subject,
       html

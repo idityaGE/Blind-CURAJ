@@ -18,11 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { studentEmailConfig } from '@/config/student-email.config';
 
 const ForgotPinSchema = z.object({
   enrollmentId: z
     .string()
-    .regex(/^\d{4}[A-Za-z]+\d{3}$/, 'Invalid enrollment ID format. Example: 2023BTCSE017'),
+    .regex(studentEmailConfig.localPart.regex, `Invalid enrollment ID format. Example: ${studentEmailConfig.localPart.example}`),
 });
 
 type ForgotPinInput = z.infer<typeof ForgotPinSchema>;
@@ -43,7 +44,7 @@ export const ForgotPinForm = () => {
     setIsLoading(true);
     try {
       // Convert enrollment ID to email format
-      const email = `${values.enrollmentId.toLowerCase()}@curaj.ac.in`;
+      const email = `${values.enrollmentId.toLowerCase()}@${studentEmailConfig.domainName}`;
       await forgotPin(email);
 
       toast({
@@ -83,12 +84,12 @@ export const ForgotPinForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="2023BTCSE017"
+                      placeholder={studentEmailConfig.localPart.example}
                       disabled={isLoading}
                     />
                   </FormControl>
                   <FormDescription>
-                    Enter your enrollment ID (e.g., 2023BTCSE017)
+                    Enter your enrollment ID (e.g., {studentEmailConfig.localPart.example}) to receive a reset link.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

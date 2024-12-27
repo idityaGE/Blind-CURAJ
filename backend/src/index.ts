@@ -12,8 +12,7 @@ const server = http.createServer((req, res) => {
 const io = new Server(server, {
   cors: {
     origin: [
-      "https://blind-curaj.vercel.app",
-      "http://localhost:3000" // Keep this for local development
+      process.env.FRONTEND_URL! || "http://localhost:3000"
     ],
     methods: ["GET", "POST"],
     credentials: true

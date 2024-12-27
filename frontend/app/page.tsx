@@ -12,6 +12,11 @@ export default async function Home() {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
 
+  if (!user && token) {
+    // Token exists but invalid - clear it
+    cookieStore.delete('token');
+  }
+
   return (
     <div className="max-h-screen flex flex-col w-full relative">
       <Navbar user={user} />

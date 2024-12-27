@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
         },
       });
     } catch (error) {
-      // If token is invalid, clear it and redirect to signin
+      // Clear invalid token and allow access to auth paths
       const response = NextResponse.redirect(new URL('/signin', request.url));
       response.cookies.delete('token');
       return response;

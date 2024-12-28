@@ -1,41 +1,33 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from '@/helpers/helper';
-import { prisma } from '@/lib/db/prisma';
 
+// Define protected paths that need authentication
 const protectedPaths = ['/chat'];
+
+// Define authentication paths
 const authPaths = ['/signin', '/signup', '/verify', '/forgot-pin', '/reset-pin'];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
   const { pathname } = request.nextUrl;
 
+  // Check if the current path is protected
   const isProtectedPath = protectedPaths.some(path =>
     pathname.startsWith(path)
   );
 
+  // Check if the current path is an auth path
   const isAuthPath = authPaths.some(path =>
     pathname.startsWith(path)
   );
 
+  // Handle token validation first if token exists
   if (token) {
     try {
       const decoded = await verifyToken(token.value);
-      
-      // Add user validation
-      const user = await prisma.user.findUnique({
-        where: { id: decoded.id as string },
-        select: { id: true }
-      });
 
-      // If token is valid but user doesn't exist, clear token and redirect to signin
-      if (!user) {
-        const response = NextResponse.redirect(new URL('/signin', request.url));
-        response.cookies.delete('token');
-        return response;
-      }
-
-      // Token is valid and user exists - handle different paths
+      // Token is valid - handle different paths
       if (isAuthPath) {
         // Special handling for reset-pin with token parameter
         if (pathname.startsWith('/reset-pin') && request.nextUrl.searchParams.has('token')) {
@@ -77,8 +69,16 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Configure which routes to run middleware on
 export const config = {
   matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
 };

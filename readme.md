@@ -61,8 +61,8 @@ export const studentEmailConfig = {
 
 ## ❤️ Support Me
 
-- ☕ **[Buy Me a Coffee](https://www.buymeacoffee.com/your-profile)**: If you like this project, consider supporting me!
-- 🐦 **[Follow Me on Twitter](https://twitter.com/your-twitter-handle)**: Stay updated with my latest projects and tech adventures.
+- ☕ **[Buy Me a Coffee](https://www.buymeacoffee.com/idityage)**: If you like this project, consider supporting me!
+- 🐦 **[Follow Me on Twitter](https://twitter.com/idityage)**: Stay updated with my latest projects and tech adventures.
 
 ## 🌱 Getting Started
 

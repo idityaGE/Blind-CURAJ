@@ -28,6 +28,12 @@ Blind Chat is a platform designed for students of a specific college to connect 
 
 For detailed setup instructions, refer to the [📄 Installation Guide](https://github.com/idityaGE/Blind-Chat/blob/main/INSTALLATION.md).
 
+## ☁️ Cloud Architecture
+![Cloud Architecture Image](https://res.cloudinary.com/dwdbqwqxk/image/upload/v1735479559/diagram-export-29-12-2024-7_04_50-pm_skau22.png)
+
+## 🧷 Simple Flow Diagram
+![Simple Flow Diagram Image](https://res.cloudinary.com/dwdbqwqxk/image/upload/v1735479572/Untitled-2024-12-06-1452_kfjeq1.png)
+
 ## 🛠️ Customizing for Your College
 
 The platform uses a configuration file to define college-specific details. Here's how you can update it:
